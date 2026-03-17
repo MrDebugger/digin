@@ -6,7 +6,9 @@
 [![GitHub issues](https://img.shields.io/github/issues/MrDebugger/digin.svg)](https://github.com/MrDebugger/digin/issues)
 [![GitHub last commit](https://img.shields.io/github/last-commit/MrDebugger/digin.svg)](https://github.com/MrDebugger/digin/commits)
 
-<h1 align="center">digin</h1>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/MrDebugger/digin/master/assets/logo.svg" alt="digin logo" width="400"/>
+</div>
 
 <div align="center">
 
@@ -15,6 +17,10 @@ No more chaining `[]` operators — just `"a->b->0"`.
 
 **Python 3.8+** | Zero dependencies
 
+</div>
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/MrDebugger/digin/master/assets/how-it-works.svg" alt="how it works" width="700"/>
 </div>
 
 ---

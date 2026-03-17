@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="400" height="200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e94560;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f3460;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="arrow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e94560;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e94560;stop-opacity:0.6" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="200" rx="16" fill="url(#bg)"/>
+
+  <!-- Nested brackets visual -->
+  <text x="30" y="115" font-family="monospace" font-size="64" fill="#0f3460" opacity="0.3">{</text>
+  <text x="60" y="115" font-family="monospace" font-size="48" fill="#0f3460" opacity="0.4">{</text>
+  <text x="82" y="115" font-family="monospace" font-size="36" fill="#0f3460" opacity="0.5">{</text>
+
+  <!-- Main text -->
+  <text x="118" y="120" font-family="monospace, 'Courier New'" font-size="56" font-weight="bold" fill="#e8e8e8" letter-spacing="4">dig</text>
+  <text x="248" y="120" font-family="monospace, 'Courier New'" font-size="56" font-weight="bold" fill="#e94560" letter-spacing="4">in</text>
+
+  <!-- Closing brackets -->
+  <text x="310" y="115" font-family="monospace" font-size="36" fill="#0f3460" opacity="0.5">}</text>
+  <text x="330" y="115" font-family="monospace" font-size="48" fill="#0f3460" opacity="0.4">}</text>
+  <text x="355" y="115" font-family="monospace" font-size="64" fill="#0f3460" opacity="0.3">}</text>
+
+  <!-- Arrow path indicator -->
+  <text x="105" y="158" font-family="monospace" font-size="14" fill="#e94560" opacity="0.8">a -> b -> c -> value</text>
+
+  <!-- Underline accent -->
+  <rect x="118" y="128" width="200" height="3" rx="1.5" fill="url(#accent)"/>
+</svg>
