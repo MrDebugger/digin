@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nested_inside"
+version = "0.3.0"
+description = "Access and modify nested data structures using delimiter-separated key paths"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+authors = [
+    {name = "Ijaz Ur Rahim", email = "ijazkhan095@gmail.com"},
+]
+keywords = ["nested", "dict", "list", "tuple", "json", "access", "delimiter", "path"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/MrDebugger/nested_inside"

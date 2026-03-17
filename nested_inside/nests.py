@@ -1,28 +1,30 @@
-from typing import Union, List, Tuple, Any
+from typing import Union, Any
 
-NODEFAULT = "THROWERROR"
+_NODEFAULT = object()  # Unique sentinel — can't collide with any stored value
+
 
 class Nested:
-    def __init__(self, data: Any, delimiter: str = "->"):
-        """
-        Initialize a new Nested object with the given data and delimiter.
+    """Base class for nested data access using delimiter-separated key paths.
 
-        :param data: The initial data to be stored in the nested data structure.
-        :param delimiter: The string that separates keys in the key path when accessing nested values. Default is "->".
-        """
+    Wraps a data structure (dict, list, tuple) and allows access/modification
+    using paths like "a->b->0" instead of chaining [] operators.
+    """
+
+    def __init__(self, data: Any, delimiter: str = "->"):
         self._parent = None
         super().__init__(data)
         self._delimiter = delimiter
 
-    def parse(self, value: Any, modify: bool = False) -> Any:
-        """
-        A helper function that converts the value to a modifiable or immutable object based on the 'modify' flag
+    def __repr__(self) -> str:
+        cls = self.__class__.__name__
+        return f"{cls}({super().__repr__()}, delimiter={self._delimiter!r})"
 
-        :param value: The value that needs to be converted.
-        :param modify: A flag that indicates whether the returned value should be a modifiable object or not. If set to True, the returned value will
-                      be the same as the input value. Otherwise, it will be an instance of NestedDict, NestedList or NestedTuple.
-                      Default is False.
-        :return: The converted value.
+    def parse(self, value: Any, modify: bool = False) -> Any:
+        """Wrap value in a Nested subclass unless modify=True.
+
+        Args:
+            value: The value to potentially wrap.
+            modify: If True, return raw value. If False, wrap in NestedDict/List/Tuple.
         """
         if modify:
             return value
@@ -37,31 +39,25 @@ class Nested:
             value._parent = self
         return value
 
-    def get(self, key: Union[int, str, list, tuple, None], default=NODEFAULT, modify: bool = False) -> Any:
-        """
-        Retrieves the value stored at the specified key path in the nested data structure.
-        If the key is not found and default is not provided, raises an error.
-        If the key is not found and default is provided, returns default.
+    def get(self, key: Union[int, str, list, tuple, None] = None,
+            default: Any = _NODEFAULT, modify: bool = False) -> Any:
+        """Retrieve a value at the specified key path.
 
-        :param key: The key path to the desired value in the nested data structure, using the delimiter defined in the __init__ method.
-                    It can be of type str, list or tuple.
-        :param default: The value to return if the key is not found in the nested data structure. Default is NODEFAULT.
-        :param modify:  A flag that indicates whether the returned value should be a modifiable object or not. If set to True, the returned value will
-                        be the same as the input value. Otherwise, it will be an instance of NestedDict, NestedList or NestedTuple.
-                        Default is False.
-        :return: The value stored at the specified key path in the nested data structure.
+        Args:
+            key: Delimiter-separated string, list/tuple of keys, int index, or None for self.
+            default: Value to return if key not found. Raises if not provided.
+            modify: If True, return raw value instead of Nested wrapper.
         """
-
-        if not key:
+        if key is None:
             return self.parse(self, modify)
+        self._last_key = key
         try:
             if isinstance(key, (str, list, tuple)):
-                self._key = key
                 keys = key.split(self._delimiter) if isinstance(key, str) else key
                 value = self
                 for k in keys:
                     if isinstance(value, (list, tuple)):
-                        if isinstance(k, int) or k.isdigit():
+                        if isinstance(k, int) or (isinstance(k, str) and k.lstrip('-').isdigit()):
                             value = value[int(k)]
                         else:
                             value = value[self._get_list_index(k, value)]
@@ -75,124 +71,87 @@ class Nested:
             else:
                 raise SyntaxError(f"Key of type {key.__class__.__name__} is not supported")
         except (AttributeError, IndexError, KeyError) as e:
-            if default == NODEFAULT:
+            if default is _NODEFAULT:
                 raise e
             return default
-        
+
         return self.parse(value, modify)
 
     def set(self, key: Union[int, str, list, tuple], value: Any) -> None:
-        """
-        Set the value stored at the specified key path in the nested data structure.
+        """Set a value at the specified key path.
 
-        :param key: The key path to the desired value in the nested data structure, using the delimiter defined in the __init__ method.
-                    It can be of type str, list or tuple.
-        :param value: The value to be set at the specified key path.
+        Args:
+            key: Delimiter-separated string, list/tuple of keys, or int index.
+            value: The value to set.
         """
-
         self.__setitem__(key, value)
-    
+
     def _get_list_index(self, key: Union[int, str], lst: list) -> int:
-        """
-        A helper function that finds the index of the key in the given list of dictionaries.
-
-        :param key: The key to be searched in the list of dictionaries.
-        :param lst: The list of dictionaries in which the key needs to be searched.
-        :return: The index of the key in the given list of dictionaries.
-        """
-
+        """Find the index of a dict containing key in a list of dicts."""
         for i, d in enumerate(lst):
             if isinstance(d, dict) and key in d:
                 return i
-        raise KeyError
-    
-    def __call__(self, key: Any = None, value: Any = None, default=NODEFAULT) -> Any:
-        """
-        Allows the class instance to be called as a function.
-        When called with a key, it returns the value stored at the specified key path in the nested data structure.
-        If the key is not found and default is not provided, raises an error.
-        If the key is not found and default is provided, returns default.
-        When called with a key and a value, it sets the value stored at the specified key path in the nested data structure.
-        When called without any arguments, it returns the entire nested data structure.
+        raise KeyError(key)
 
-        :param key: The key path to the desired value in the nested data structure, using the delimiter defined in the __init__ method.
-                    It can be of type str, list or tuple.
-        :param value: The value to be set at the specified key path.
-        :param default: The value to return if the key is not found in the nested data structure. Default is NODEFAULT.
-        :return: The value stored at the specified key path in the nested data structure.
-        """
+    def __call__(self, key: Any = None, value: Any = _NODEFAULT,
+                 default: Any = _NODEFAULT) -> Any:
+        """Call instance as function for get/set.
 
-        if value:
+        With key only: get value.
+        With key and value: set value.
+        Without arguments: return self.
+        """
+        if value is not _NODEFAULT:
             return self.set(key, value)
-        else:
-            return self.get(key, default)
-    
+        return self.get(key, default)
+
     def __getitem__(self, key: Union[str, int, list, tuple]) -> Any:
-        """
-        Retrieves the value stored at the specified key path in the nested data structure using the [] operator.
-
-        :param key: The key path to the desired value in the nested data structure, using the delimiter defined in the __init__ method.
-                    It can be of type str, int, list or tuple.
-        :return: The value stored at the specified key path in the nested data structure.
-        """
-
         if (isinstance(key, str) and self._delimiter in key) or isinstance(key, (list, tuple)):
-                return self.get(key)
+            return self.get(key)
         return super().__getitem__(key)
 
     def __setitem__(self, key: Union[str, int, list, tuple], value: Any) -> None:
-        """
-        Set the value stored at the specified key path in the nested data structure using the [] operator.
-
-        :param key: The key path to the desired value in the nested data structure, using the delimiter defined in the __init__ method.
-                    It can be of type str, int, list or tuple.
-        :param value: The value to be set at the specified key path.
-        """
         if (isinstance(key, str) and self._delimiter in key) or isinstance(key, (list, tuple)):
             keys = key.split(self._delimiter) if isinstance(key, str) else key
-            d = self.get(self._delimiter.join(keys[:-1]), modify=True)
-            if isinstance(d, (list, tuple)) and keys[-1].isdigit():
-                d[int(keys[-1])] = value
+            parent_key = self._delimiter.join(str(k) for k in keys[:-1]) if len(keys) > 1 else None
+            d = self.get(parent_key, modify=True) if parent_key else self
+            last_key = keys[-1]
+            if isinstance(d, (list, tuple)) and isinstance(last_key, str) and last_key.lstrip('-').isdigit():
+                d[int(last_key)] = value
             else:
-                d[keys[-1]] = value
+                d[last_key] = value
         else:
             super().__setitem__(key, value)
-    def __getattr__(self, key: str) -> Any:
-        """
-        Retrieves the value stored at the specified key path in the nested data structure using dot notation.
 
-        :param key: The key path to the desired value in the nested data structure, using the delimiter defined in the __init__ method.
-        :return: The value stored at the specified key path in the nested data structure.
-        """
+    def __getattr__(self, key: str) -> Any:
         try:
             return self.get(key)
         except KeyError:
             raise AttributeError(key)
-    def __setattr__(self, key: str, value: Any) -> None:
-        """
-        Set the value stored at the specified key path in the nested data structure using dot notation.
 
-        :param key: The key path to the desired value in the nested data structure, using the delimiter defined in the __init__ method.
-        :param value: The value to be set at the specified key path.
-        """
-        if key not in ['_parent', '_key', '_delimiter']:
-            if self._parent and self._parent._key:
-                if isinstance(self._parent._key, str):
-                    key = self._delimiter.join([self._parent._key, key])
-                else:
-                    key = self._parent._key
-                self._parent[key] = value
-            else:
-                self[key] = value
-        else:
+    def __setattr__(self, key: str, value: Any) -> None:
+        if key.startswith('_'):
             super().__setattr__(key, value)
-        
+        elif self._parent is not None and hasattr(self._parent, '_last_key') and self._parent._last_key:
+            if isinstance(self._parent._last_key, str):
+                full_key = self._delimiter.join([self._parent._last_key, key])
+            else:
+                full_key = self._parent._last_key
+            self._parent[full_key] = value
+        else:
+            self[key] = value
+
 
 class NestedDict(Nested, dict):
-    pass 
-
-class NestedList(Nested, list):
+    """A dict with nested access via delimiter-separated key paths."""
     pass
 
+
+class NestedList(Nested, list):
+    """A list with nested access via delimiter-separated key paths."""
+    pass
+
+
 class NestedTuple(Nested, tuple):
+    """A tuple with nested access via delimiter-separated key paths (read-only)."""
     pass

@@ -87,4 +87,5 @@ class TestNestedList(unittest.TestCase):
         self.assertEqual(self.nested_list.get('2.a', 'default'), 'default')
         self.assertRaises(IndexError, self.nested_list.get, '2.a')
 
-unittest.main()
+if __name__ == '__main__':
+    unittest.main()
