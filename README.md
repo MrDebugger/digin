@@ -1,12 +1,12 @@
-[![PyPI version](https://img.shields.io/pypi/v/nested_inside.svg)](https://pypi.python.org/pypi/nested_inside/)
-[![PyPI downloads](https://img.shields.io/pypi/dm/nested_inside.svg)](https://pypi.python.org/pypi/nested_inside/)
-[![PyPI pyversions](https://img.shields.io/pypi/pyversions/nested_inside.svg)](https://pypi.python.org/pypi/nested_inside/)
-[![PyPI license](https://img.shields.io/pypi/l/nested_inside.svg)](https://pypi.python.org/pypi/nested_inside/)
-[![GitHub stars](https://img.shields.io/github/stars/MrDebugger/nested_inside.svg)](https://github.com/MrDebugger/nested_inside/stargazers)
-[![GitHub issues](https://img.shields.io/github/issues/MrDebugger/nested_inside.svg)](https://github.com/MrDebugger/nested_inside/issues)
-[![GitHub last commit](https://img.shields.io/github/last-commit/MrDebugger/nested_inside.svg)](https://github.com/MrDebugger/nested_inside/commits)
+[![PyPI version](https://img.shields.io/pypi/v/digin.svg)](https://pypi.python.org/pypi/digin/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/digin.svg)](https://pypi.python.org/pypi/digin/)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/digin.svg)](https://pypi.python.org/pypi/digin/)
+[![PyPI license](https://img.shields.io/pypi/l/digin.svg)](https://pypi.python.org/pypi/digin/)
+[![GitHub stars](https://img.shields.io/github/stars/MrDebugger/digin.svg)](https://github.com/MrDebugger/digin/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/MrDebugger/digin.svg)](https://github.com/MrDebugger/digin/issues)
+[![GitHub last commit](https://img.shields.io/github/last-commit/MrDebugger/digin.svg)](https://github.com/MrDebugger/digin/commits)
 
-<h1 align="center">nested_inside</h1>
+<h1 align="center">digin</h1>
 
 <div align="center">
 
@@ -41,7 +41,7 @@ No more chaining `[]` operators — just `"a->b->0"`.
 ## Installation
 
 ```bash
-pip install -U nested_inside
+pip install -U digin
 ```
 
 ---
@@ -49,7 +49,7 @@ pip install -U nested_inside
 ## Quick Start
 
 ```python
-from nested_inside import NestedDict
+from digin import NestedDict
 
 data = {
     "users": {
@@ -246,7 +246,7 @@ nd.get("users->alice", modify=True)
 Extends `dict` with nested path access. Supports all dict methods plus nested get/set:
 
 ```python
-from nested_inside import NestedDict
+from digin import NestedDict
 
 nd = NestedDict({"a": {"b": {"c": 1}}})
 nd.get("a->b->c")  # 1
@@ -263,7 +263,7 @@ len(nd)             # 1
 Extends `list` with nested path access:
 
 ```python
-from nested_inside import NestedList
+from digin import NestedList
 
 nl = NestedList([{"name": "Alice"}, {"name": "Bob"}])
 nl.get("0->name")  # 'Alice'
@@ -280,7 +280,7 @@ len(nl)             # 2
 Extends `tuple` with nested path access (read-only):
 
 ```python
-from nested_inside import NestedTuple
+from digin import NestedTuple
 
 nt = NestedTuple(({"a": 1}, {"b": 2}))
 nt.get("0->a")  # 1
@@ -332,6 +332,6 @@ nt[0]            # {'a': 1}
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, versioning guide, and how to submit changes.
 
-<a href="https://github.com/MrDebugger/nested_inside/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=MrDebugger/nested_inside"/>
+<a href="https://github.com/MrDebugger/digin/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=MrDebugger/digin"/>
 </a>

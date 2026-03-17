@@ -1,4 +1,4 @@
-# Contributing to nested_inside
+# Contributing to digin
 
 We appreciate all contributions! Here's how to get involved.
 
@@ -17,8 +17,8 @@ If you plan to contribute new features, **please first open an issue** and discu
 ## Development Setup
 
 ```bash
-git clone https://github.com/MrDebugger/nested_inside.git
-cd nested_inside
+git clone https://github.com/MrDebugger/digin.git
+cd digin
 pip install -e .
 python3 -m pytest tests/tests.py -v
 ```
@@ -26,7 +26,7 @@ python3 -m pytest tests/tests.py -v
 ## Project Structure
 
 ```
-nested_inside/
+digin/
 ├── __init__.py    # Exports: Nested, NestedDict, NestedList, NestedTuple
 └── nests.py       # All classes and logic
 ```
@@ -63,6 +63,6 @@ This project follows [Semantic Versioning](https://semver.org/):
 
 ## Contributors
 
-<a href="https://github.com/MrDebugger/nested_inside/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=MrDebugger/nested_inside"/>
+<a href="https://github.com/MrDebugger/digin/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=MrDebugger/digin"/>
 </a>

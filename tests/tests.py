@@ -1,4 +1,4 @@
-from nested_inside import NestedDict, NestedList, NestedTuple
+from digin import NestedDict, NestedList, NestedTuple
 import unittest
 
 class TestNestedDict(unittest.TestCase):

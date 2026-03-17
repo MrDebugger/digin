@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "nested_inside"
-version = "0.3.0"
+name = "digin"
+version = "0.4.0"
 description = "Access and modify nested data structures using delimiter-separated key paths"
 readme = "README.md"
 license = "MIT"
@@ -19,4 +19,4 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/MrDebugger/nested_inside"
+Homepage = "https://github.com/MrDebugger/digin"
