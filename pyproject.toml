@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "digin"
 version = "0.4.0"
-description = "Access and modify nested data structures using delimiter-separated key paths"
+description = "Dig into nested data structures using delimiter-separated key paths"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.8"
