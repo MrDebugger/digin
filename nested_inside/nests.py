@@ -154,4 +154,10 @@ class NestedList(Nested, list):
 
 class NestedTuple(Nested, tuple):
     """A tuple with nested access via delimiter-separated key paths (read-only)."""
-    pass
+
+    def __new__(cls, data, delimiter: str = "->"):
+        return tuple.__new__(cls, data)
+
+    def __init__(self, data: Any = None, delimiter: str = "->"):
+        self._parent = None
+        self._delimiter = delimiter
