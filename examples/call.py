@@ -1,4 +1,4 @@
-from nested_inside import NestedDict
+from digin import NestedDict
 
 # Hardcoded JSON data
 data = {

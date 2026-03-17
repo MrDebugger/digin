@@ -1,4 +1,4 @@
-from nested_inside import NestedList
+from digin import NestedList
 
 # Hardcoded JSON data
 data = [
