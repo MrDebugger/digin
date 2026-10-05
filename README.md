@@ -19,6 +19,14 @@ No more chaining `[]` operators — just `"a->b->0"`.
 
 </div>
 
+<p align="center">
+  <a href="https://github.com/MrDebugger/digin/blob/master/assets/videos/digin-demo.mp4">
+    <img src="https://raw.githubusercontent.com/MrDebugger/digin/master/assets/videos/digin-demo.gif" alt="digin demo: a chain of [] lookups collapsing into one path string, then reading, writing, custom delimiters and defaults" width="720"/>
+  </a>
+  <br/>
+  <sub>▶ <a href="https://github.com/MrDebugger/digin/blob/master/assets/videos/digin-demo.mp4">Watch the demo with sound (MP4)</a></sub>
+</p>
+
 <div align="center">
   <img src="https://raw.githubusercontent.com/MrDebugger/digin/master/assets/how-it-works.svg" alt="how it works" width="700"/>
 </div>
